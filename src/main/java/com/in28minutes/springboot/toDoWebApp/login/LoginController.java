@@ -5,8 +5,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("name")
 public class LoginController {
 	
 	private AuthenticationService authenticationService;
@@ -29,6 +31,8 @@ public class LoginController {
 
 	@RequestMapping(value="/login",method = RequestMethod.POST)
 	//we need a Model map to pass this information to the welcome page
+	//Note! Anything we put in a model is by default only available for the scope of this request.
+	//If we want it to live longer we need to put it in something called session
 	public String gotoWelcomePage(@RequestParam String name, String password, ModelMap model) {
 		
 		if (authenticationService.authenticate(name, password)) {

@@ -4,7 +4,7 @@
 	</head>
 	<body>
 	<div>
-		Welcome to the app </div>
+		Welcome ${name} </div>
 		<div>Your Todos are: ${todos} </div>
 	</body>
 </html>
