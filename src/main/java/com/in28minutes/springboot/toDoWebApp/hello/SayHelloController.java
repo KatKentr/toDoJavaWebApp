@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 //we need to tell Spring that this is a Bean
-@Controller
+@Controller //Controller manages the requests
 public class SayHelloController {
 	
 	@RequestMapping("/hello")
@@ -18,10 +18,11 @@ public class SayHelloController {
 	}
 	
 	
-	// we will redirect to sayHello.jsp
+	// method mapped to URL., handles the request.  we will redirect to sayHello.jsp
 	@RequestMapping("/say-hello-jsp")
 	public String sayHelloJsp() {
 		
+		//name of the jsp file
 		return "sayHello";
 		
 	}
