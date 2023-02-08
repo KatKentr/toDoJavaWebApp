@@ -1,11 +1,12 @@
 package com.in28minutes.springboot.toDoWebApp.hello;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 //we need to tell Spring that this is a Bean
-@RestController
+@Controller
 public class SayHelloController {
 	
 	@RequestMapping("/hello")
@@ -15,5 +16,15 @@ public class SayHelloController {
 		return "Hell!What are you learning today?";
 		
 	}
+	
+	
+	// we will redirect to sayHello.jsp
+	@RequestMapping("/say-hello-jsp")
+	public String sayHelloJsp() {
+		
+		return "sayHello";
+		
+	}
+	
 
 }
