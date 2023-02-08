@@ -1,25 +1,52 @@
 package com.in28minutes.springboot.toDoWebApp.login;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
 	
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private AuthenticationService authenticationService;
+	// = new AuthenticationService();  initialization if we did not use Spring. We couple it manually with an instance of the class AuthenticationService
 	
-	//http://localhost:8080/login?name=<write a name>
-	@RequestMapping("/login")
-	public String gotoLoginPage(@RequestParam String name,ModelMap model) {
-		model.put("name",name);
-		//System.out.println("Request param is" + name); //not recommended for prod code, use logger instead
-		//we can see it in the console only if the logging level is debug for our package, in the application.properties file
-		logger.debug("Request param is {}",name);
+	//Constructor-based Injection
+	public LoginController(AuthenticationService authenticationService) {
+		super();
+		this.authenticationService = authenticationService;
+	}	
+	
+	@RequestMapping(value="/login",method = RequestMethod.GET)
+	public String gotoLoginPage() {
+
 		return "login";
+		
+	}
+	
+	
+
+	@RequestMapping(value="/login",method = RequestMethod.POST)
+	//we need a Model map to pass this information to the welcome page
+	public String gotoWelcomePage(@RequestParam String name, String password, ModelMap model) {
+		
+		if (authenticationService.authenticate(name, password)) {
+			
+			    model.put("name",name);		        
+		        //simple authentication logic
+		        //name - validUser
+		        //password-dummy
+		        //else rediricted to the login page
+		        
+				return "welcome";
+			
+			
+		} 
+		
+		model.put("errorMessage","Invalid credentials! Please try again");
+		return "login";
+       
 		
 	}
 
