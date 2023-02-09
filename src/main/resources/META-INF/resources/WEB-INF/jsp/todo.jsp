@@ -16,6 +16,7 @@
 		<!-- Using the todo Bean, we want to map the form element text to the member variable description-->
                   Description: <form:input type="text" path="description" 
 								required="required"/>
+								<form:errors path="description" cssClass="text-warning"/>
 				<form:input type="hidden" path="id"/>
 				<form:input type="hidden" path="done"/>
 				<input type="submit" class="btn btn-success" />
