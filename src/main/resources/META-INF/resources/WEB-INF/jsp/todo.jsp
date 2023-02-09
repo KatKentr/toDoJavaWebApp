@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 	<head>
@@ -10,10 +11,15 @@
 	<div class="container">
 	<div>
 		<h1>Enter Todo Details </h1>
-		<form method ="post">
-		Description: <input type="text" name="description"/>
-				<input type="submit" class="btn btn-success"/>
-		</form>
+		<!-- we bind it to the todo attribute of the method addNewTodo() in the TodoController-->
+		<form:form method="post" modelAttribute="todo">
+		<!-- Using the todo Bean, we want to map the form element text to the member variable description-->
+                  Description: <form:input type="text" path="description" 
+								required="required"/>
+				<form:input type="hidden" path="id"/>
+				<form:input type="hidden" path="done"/>
+				<input type="submit" class="btn btn-success" />
+			</form:form>
 
 		</div>
 		<script>src="webjars/bootstrap/5.1.3/js/bootstrap.min.js"</script>

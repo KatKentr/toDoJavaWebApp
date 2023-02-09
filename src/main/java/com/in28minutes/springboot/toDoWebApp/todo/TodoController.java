@@ -24,7 +24,6 @@ public TodoController(TodoService todoService) {
 }
 
 
-
 @RequestMapping("/list-todos")
 public String listAllTodos(ModelMap model) {
 	List<Todo> todos=todoService.findByUsername("Course provider A");
@@ -34,16 +33,21 @@ public String listAllTodos(ModelMap model) {
 
 //without HTTP method specified, it handles all type of requests GET, POST..
 @RequestMapping(value="/add-todo", method=RequestMethod.GET)
-public String showNewTodoPage() {
 
+public String showNewTodoPage(ModelMap model) {
+	String username=(String)model.get("name");
+    Todo todo=new Todo(0,username,"",LocalDate.now().plusYears(1),false); //we initialize a todo to be used in the jsp
+    model.put("todo", todo);
 	return "todo";
 }
 
 //we add a new toDo in the list and redirect the user to the /list-todos page
+//Instead of binding to model map we can bind directly to the Todo Bean (form backing object)
+//we can make use of the form backing object in the jsp as well: we need to use spring form tag library
 @RequestMapping(value="/add-todo", method=RequestMethod.POST)
-public String addNewTodo(@RequestParam String description,ModelMap model) {
+public String addNewTodo(ModelMap model,Todo todo) {
 	String username=(String)model.get("name");
-	todoService.addTodo(username, description, LocalDate.now().plusYears(1), false);
+	todoService.addTodo(username, todo.getDescription(), LocalDate.now().plusYears(1), false);
 	return "redirect:list-todos";
 }
 
