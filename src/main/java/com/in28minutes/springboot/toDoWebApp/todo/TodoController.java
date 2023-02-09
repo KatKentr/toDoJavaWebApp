@@ -57,7 +57,12 @@ public String addNewTodo(ModelMap model,@Valid Todo todo, BindingResult result) 
 	return "redirect:list-todos";
 }
 
-
+@RequestMapping("/delete-todo")
+public String deleteTodo(@RequestParam Long id) {
+	//Delete todo and redirect to the list todo page
+	todoService.deleteById(id);
+	return "redirect:list-todos";
+}
 	
 
 }
