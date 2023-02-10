@@ -17,6 +17,7 @@
 		       <th>Description</th>
 		       <th>Target Date</th>
 		       <th>Is Done?</th>
+		       <th></th>
 		       <th></th>		 
 		     </tr>
 		  </thead>
@@ -30,6 +31,7 @@
 		       <td>${todo.done}</td>
 		       <!-- we pass the id of todo to be deleted as query parameter to the controller -->
 		       <td> <a href="delete-todo?id=${todo.id}" class="btn btn-warning">DELETE</a>   </td>
+		       <td> <a href="update-todo?id=${todo.id}" class="btn btn-success">UPDATE</a>   </td>
 		    </tr>		
 		    </c:forEach>
 		 </tbody>

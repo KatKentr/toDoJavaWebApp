@@ -63,6 +63,28 @@ public String deleteTodo(@RequestParam Long id) {
 	todoService.deleteById(id);
 	return "redirect:list-todos";
 }
+
+@RequestMapping(value="/update-todo",method=RequestMethod.GET)
+public String showUdpateTodoPage(@RequestParam Long id,ModelMap model) {
+	//display the todo page
+	Todo todo=todoService.findById(id); //find the todo with this id, pass it in the todo jsp page using model
+	model.put("todo", todo); 
+	return "todo";
+}
+
+@RequestMapping(value="/update-todo", method=RequestMethod.POST)           //second-side binding: the values filled to the form need to be mapped to the post request. The text submitted by the user gets bound to the description field of the todo and added to the list
+public String updateTodo(ModelMap model,@Valid Todo todo, BindingResult result) {//Two-way binding: from the Bean to the form, from the form to the Bean
+	if (result.hasErrors()) {
+		return "todo"; //if there is an error go back to the todo page
+		
+	}
+	String username=(String)model.get("name");
+	todo.setUsername(username);
+	todoService.updateTodo(todo);
+	return "redirect:list-todos";
+}
+
+
 	
 
 }
