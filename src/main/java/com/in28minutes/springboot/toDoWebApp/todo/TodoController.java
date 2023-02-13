@@ -1,5 +1,7 @@
 package com.in28minutes.springboot.toDoWebApp.todo;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -29,7 +31,8 @@ public TodoController(TodoService todoService) {
 
 @RequestMapping("/list-todos")
 public String listAllTodos(ModelMap model) {
-	List<Todo> todos=todoService.findByUsername("Course provider A");
+	String username=getLoggedInUsername(model);
+	List<Todo> todos=todoService.findByUsername(username);
 	model.addAttribute("todos",todos);
 	return "listTodos";
 }
@@ -37,11 +40,12 @@ public String listAllTodos(ModelMap model) {
 //without HTTP method specified, it handles all type of requests GET, POST..
 @RequestMapping(value="/add-todo", method=RequestMethod.GET)
 public String showNewTodoPage(ModelMap model) {
-	String username=(String)model.get("name");
+	String username=getLoggedInUsername(model);
     Todo todo=new Todo(0,username,"",LocalDate.now().plusYears(1),false); //when we load the todo page, we create a new todo and map it to the form present. we initialize a todo to be used in the jsp
     model.put("todo", todo);                                             //This is also called one-side binding from the controller to the values shown in the form.
 	return "todo";
 }
+
 
 //we add a new toDo in the list and redirect the user to the /list-todos page
 //Instead of binding to model map we can bind directly to the Todo Bean (form backing object)
@@ -52,7 +56,7 @@ public String addNewTodo(ModelMap model,@Valid Todo todo, BindingResult result) 
 		return "todo"; //if there is an error go back to the todo page
 		
 	}
-	String username=(String)model.get("name");
+	String username=getLoggedInUsername(model);
 	todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
 	return "redirect:list-todos";
 }
@@ -78,13 +82,17 @@ public String updateTodo(ModelMap model,@Valid Todo todo, BindingResult result) 
 		return "todo"; //if there is an error go back to the todo page
 		
 	}
-	String username=(String)model.get("name");
+	String username=getLoggedInUsername(model);
 	todo.setUsername(username);
 	todoService.updateTodo(todo);
 	return "redirect:list-todos";
 }
 
 
+private String getLoggedInUsername(ModelMap model) {
+	Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+	return authentication.getName();
+}
 	
 
 }

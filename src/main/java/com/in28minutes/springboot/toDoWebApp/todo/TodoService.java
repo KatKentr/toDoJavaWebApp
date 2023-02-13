@@ -21,14 +21,16 @@ public class TodoService {
 	//initialization
 	static {
 		
-		todos.add(new Todo(++todosCount,"Course provider A","Get AWS Certified",LocalDate.now().plusYears(1),false));
-		todos.add(new Todo(++todosCount,"Course provider A","Learn Devops",LocalDate.now().plusYears(2),false));
-		todos.add(new Todo(++todosCount,"Course provider A","Learn full stack development",LocalDate.now().plusYears(3),false));
+		todos.add(new Todo(++todosCount,"validUser","Get AWS Certified",LocalDate.now().plusYears(1),false));
+		todos.add(new Todo(++todosCount,"validUser","Learn Devops",LocalDate.now().plusYears(2),false));
+		todos.add(new Todo(++todosCount,"validUser","Learn full stack development",LocalDate.now().plusYears(3),false));
 	}
 	
 	
 	public List<Todo> findByUsername(String username){
-		return todos;		
+		Predicate<? super Todo> predicate //we define a condition
+		  =todo -> todo.getUsername().equalsIgnoreCase(username);
+		return todos.stream().filter(predicate).toList();		//convert todos to a stream and check condition for each one. At the end we convert the filtered ones to a list
 	}
 	
 	
