@@ -30,6 +30,12 @@ public class Todo {         //we can also change the name of the table and the c
 	private boolean done;
 	
 	
+ //When defining the class as Entity, it seems that e mut have a default constructor too
+	public Todo() {
+		
+	}
+	
+	
 	public Todo(long id, String username, String description, LocalDate targetDate, boolean done) {
 		super();
 		this.id = id;

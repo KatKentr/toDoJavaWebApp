@@ -18,21 +18,23 @@ import java.util.List;
 @Controller
 //we want the name of the user to be available in the todo page
 @SessionAttributes("name")
-public class TodoController {
+public class TodoControllerJPA {
 	
-  private TodoService todoService;
   
-  		
-public TodoController(TodoService todoService) {
+  private TodoRepository todoRepository;
+  
+//Autowire todoRepository  		
+public TodoControllerJPA(TodoRepository todoRepository) {
 	super();
-	this.todoService = todoService;
+
+	this.todoRepository=todoRepository;
 }
 
 
 @RequestMapping("/list-todos")
 public String listAllTodos(ModelMap model) {
 	String username=getLoggedInUsername(model);
-	List<Todo> todos=todoService.findByUsername(username);
+	List<Todo> todos=todoRepository.findByUsername(username);
 	model.addAttribute("todos",todos);
 	return "listTodos";
 }
@@ -57,21 +59,22 @@ public String addNewTodo(ModelMap model,@Valid Todo todo, BindingResult result) 
 		
 	}
 	String username=getLoggedInUsername(model);
-	todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
+	todo.setUsername(username);
+	todoRepository.save(todo);
 	return "redirect:list-todos";
 }
 
 @RequestMapping("/delete-todo")
 public String deleteTodo(@RequestParam Long id) {
 	//Delete todo and redirect to the list todo page
-	todoService.deleteById(id);
+	todoRepository.deleteById(id);
 	return "redirect:list-todos";
 }
 
 @RequestMapping(value="/update-todo",method=RequestMethod.GET)
 public String showUdpateTodoPage(@RequestParam Long id,ModelMap model) {
 	//display the todo page
-	Todo todo=todoService.findById(id); //find the todo with this id, pass it in the todo jsp page using model
+	Todo todo=todoRepository.findById(id).get(); //find the todo with this id, pass it in the todo jsp page using model
 	model.put("todo", todo); 
 	return "todo";
 }
@@ -84,7 +87,7 @@ public String updateTodo(ModelMap model,@Valid Todo todo, BindingResult result) 
 	}
 	String username=getLoggedInUsername(model);
 	todo.setUsername(username);
-	todoService.updateTodo(todo);
+	todoRepository.save(todo);  //update todo
 	return "redirect:list-todos";
 }
 
