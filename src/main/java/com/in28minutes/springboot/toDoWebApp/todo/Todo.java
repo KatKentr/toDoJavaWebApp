@@ -2,6 +2,9 @@ package com.in28minutes.springboot.toDoWebApp.todo;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 
@@ -10,9 +13,14 @@ import jakarta.validation.constraints.Size;
 //store them in Database
 //1. Static list of todos -> Database (H2,MySQL)
 
-public class Todo {
+@Entity //(we map this Bean to a database table). By uing the annotation Todo table will be automatically created in H2 database
+public class Todo {         //we can also change the name of the table and the columns in the db. Jpa supports also mapping to comple relationhips
 	
+	@Id
+	@GeneratedValue
 	private long id;
+	
+	
 	private String username;
 	
 	//minimum length required for the description field
