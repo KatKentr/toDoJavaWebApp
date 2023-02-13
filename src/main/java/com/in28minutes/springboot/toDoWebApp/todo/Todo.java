@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 //store them in Database
 //1. Static list of todos -> Database (H2,MySQL)
 
-@Entity //(we map this Bean to a database table). By uing the annotation Todo table will be automatically created in H2 database
+@Entity //(we map this Bean to a database table). By using the annotation Todo table will be automatically created in H2 database. However, table is not automatically created when using a real database, this can be specified in the application.properties file (spring.jpa.hibernate.ddl-auto variable). By using update, the table as automatically created 
 public class Todo {         //we can also change the name of the table and the columns in the db. Jpa supports also mapping to comple relationhips
 	
 	@Id
